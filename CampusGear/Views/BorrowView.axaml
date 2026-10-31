@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:CampusGear.ViewModels"
+             x:Class="CampusGear.Views.BorrowView"
+             x:DataType="vm:BorrowViewModel">
+    <ScrollViewer>
+        <StackPanel Margin="26,22" Spacing="14">
+            <StackPanel>
+                <TextBlock Classes="pageTitle" Text="Borrow"/>
+                <TextBlock Classes="pageSub" Text="Pick a borrower and a category. The rules are checked as you choose."/>
+            </StackPanel>
+
+            <Border Classes="card">
+                <StackPanel Spacing="12">
+                    <StackPanel Orientation="Horizontal" Spacing="16">
+                        <StackPanel Spacing="4">
+                            <TextBlock Classes="fieldLabel" Text="Borrower"/>
+                            <ComboBox Width="260" ItemsSource="{Binding Borrowers}" SelectedItem="{Binding SelectedBorrower}"/>
+                        </StackPanel>
+                        <StackPanel Spacing="4">
+                            <TextBlock Classes="fieldLabel" Text="Equipment category"/>
+                            <ComboBox Width="260" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Border Classes="info">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="{Binding AvailabilityText}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding EligibilityText}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Classes="primary" Content="Borrow" Command="{Binding BorrowCommand}" IsEnabled="{Binding CanBorrow}"/>
+                        <Button Classes="secondary" Content="Join Waiting List" Command="{Binding JoinCommand}" IsEnabled="{Binding CanJoin}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="note" Classes.error="{Binding IsError}" IsVisible="{Binding HasMessage}">
+                <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
