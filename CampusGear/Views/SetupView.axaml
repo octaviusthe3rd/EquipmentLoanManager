@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:CampusGear.ViewModels"
+             x:Class="CampusGear.Views.SetupView"
+             x:DataType="vm:SetupViewModel">
+    <ScrollViewer>
+        <Border Classes="card" MaxWidth="640" Margin="26,22" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <StackPanel Spacing="12">
+                <TextBlock Classes="pageTitle" Text="Configure equipment"/>
+                <TextBlock Classes="pageSub" TextWrapping="Wrap"
+                           Text="Enter how many items exist in each category. The maximum is a limit, not the starting stock."/>
+
+                <ItemsControl ItemsSource="{Binding Inputs}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:QuantityInput">
+                            <Grid ColumnDefinitions="150,80,90,*" Margin="0,4">
+                                <TextBlock Grid.Column="0" Text="{Binding Category}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Max, StringFormat='Max {0}'}" Foreground="#475569" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Text="{Binding Text}"/>
+                                <TextBlock Grid.Column="3" Text="{Binding Error}" Foreground="#B91C1C"
+                                           Margin="12,0" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Border Classes="note" Classes.error="{Binding IsError}" IsVisible="{Binding HasMessage}">
+            <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+        </Border>
+                <Button Classes="primary" HorizontalAlignment="Right" Content="Confirm and Start"
+                        Command="{Binding ConfirmCommand}"/>
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</UserControl>
