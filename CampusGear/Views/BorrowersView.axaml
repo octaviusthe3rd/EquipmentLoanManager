@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:CampusGear.ViewModels"
+             x:Class="CampusGear.Views.BorrowersView"
+             x:DataType="vm:BorrowersViewModel">
+
+    <Grid Margin="26,22" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="14">
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Classes="pageTitle" Text="Borrowers"/>
+            <TextBlock Classes="pageSub" Text="Add or remove the fictional borrowers used in the demo."/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Classes="card">
+            <StackPanel Spacing="10">
+                <TextBlock Classes="cardTitle" Text="Add borrower"/>
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <StackPanel Spacing="4">
+                        <TextBlock Classes="fieldLabel" Text="Name"/>
+                        <TextBox Width="240" Text="{Binding Name}"/>
+                    </StackPanel>
+                    <StackPanel Spacing="4">
+                        <TextBlock Classes="fieldLabel" Text="Borrower ID (leave blank to auto-generate)"/>
+                        <TextBox Width="260" Text="{Binding BorrowerId}"/>
+                    </StackPanel>
+                    <Button Classes="primary" Content="Add Borrower" Command="{Binding AddCommand}" VerticalAlignment="Bottom"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="2" Classes="note" Classes.error="{Binding IsError}" IsVisible="{Binding HasMessage}">
+            <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+        </Border>
+
+        <Border Grid.Row="3" Classes="card">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Classes="cardTitle" Text="Sample borrowers" Margin="0,0,0,10"/>
+                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="12" Margin="0,12,0,0">
+                    <Button Classes="secondary" Content="Remove Selected Borrower" Command="{Binding RemoveCommand}"/>
+                    <TextBlock VerticalAlignment="Center" FontSize="12" Foreground="#475569" TextWrapping="Wrap"
+                               Text="Only borrowers with no active loans can be removed."/>
+                </StackPanel>
+                <Border DockPanel.Dock="Top" Classes="thead">
+                    <Grid ColumnDefinitions="110,*,130,150">
+                        <TextBlock Classes="th" Grid.Column="0" Text="ID"/>
+                        <TextBlock Classes="th" Grid.Column="1" Text="Name"/>
+                        <TextBlock Classes="th" Grid.Column="2" Text="Active loans"/>
+                        <TextBlock Classes="th" Grid.Column="3" Text="On waiting lists"/>
+                    </Grid>
+                </Border>
+                <ListBox Classes="table" ItemsSource="{Binding Rows}" SelectedItem="{Binding Selected}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:BorrowerRow">
+                            <Border Classes="trow">
+                                <Grid ColumnDefinitions="110,*,130,150">
+                                    <TextBlock Grid.Column="0" Text="{Binding Id}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding ActiveLoans}"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding Waiting}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>
