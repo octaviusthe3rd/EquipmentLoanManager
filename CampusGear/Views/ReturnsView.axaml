@@ -1,0 +1,59 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:CampusGear.ViewModels"
+             x:Class="CampusGear.Views.ReturnsView"
+             x:DataType="vm:ReturnsViewModel">
+
+    <Grid Margin="26,22" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="14">
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Classes="pageTitle" Text="Returns"/>
+            <TextBlock Classes="pageSub" Text="Return a loan and hand the item to the next person in line."/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Classes="card">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Classes="cardTitle" Text="Active loans" Margin="0,0,0,10"/>
+                <Button DockPanel.Dock="Bottom" Classes="primary" Content="Return Selected Loan"
+                        Command="{Binding ReturnSelectedCommand}" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+                <Border DockPanel.Dock="Top" Classes="thead">
+                    <Grid ColumnDefinitions="100,*,120,170">
+                        <TextBlock Classes="th" Grid.Column="0" Text="Loan ID"/>
+                        <TextBlock Classes="th" Grid.Column="1" Text="Borrower"/>
+                        <TextBlock Classes="th" Grid.Column="2" Text="Item"/>
+                        <TextBlock Classes="th" Grid.Column="3" Text="Category"/>
+                    </Grid>
+                </Border>
+                <ListBox Classes="table" ItemsSource="{Binding ActiveLoans}" SelectedItem="{Binding Selected}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:LoanRow">
+                            <Border Classes="trow">
+                                <Grid ColumnDefinitions="100,*,120,170">
+                                    <TextBlock Grid.Column="0" Text="{Binding LoanId}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Borrower}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding ItemId}"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding Category}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="2" Classes="card" IsVisible="{Binding HasNext}">
+            <StackPanel Spacing="10">
+                <TextBlock Classes="cardTitle" Text="Waiting list"/>
+                <Border Classes="info">
+                    <TextBlock Text="{Binding NextText}" TextWrapping="Wrap"/>
+                </Border>
+                <Button Classes="primary" Content="Issue to Next Borrower" Command="{Binding IssueNextCommand}"
+                        HorizontalAlignment="Left"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="3" Classes="note" Classes.error="{Binding IsError}" IsVisible="{Binding HasMessage}">
+            <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
+</UserControl>
