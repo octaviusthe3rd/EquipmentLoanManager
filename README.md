@@ -1,4 +1,4 @@
-# Campus Equipment Simulator (CampusGear)
+# Equipment Loan Manager (CampusGear)
 
 Requires the .NET 10 SDK.
 
