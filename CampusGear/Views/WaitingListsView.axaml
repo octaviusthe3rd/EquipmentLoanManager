@@ -1,0 +1,53 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:CampusGear.ViewModels"
+             x:Class="CampusGear.Views.WaitingListsView"
+             x:DataType="vm:WaitingListsViewModel">
+
+    <Grid Margin="26,22" RowDefinitions="Auto,*,Auto" RowSpacing="14">
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Classes="pageTitle" Text="Waiting Lists"/>
+            <TextBlock Classes="pageSub" Text="First come, first served queues for each category."/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Classes="card">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,10">
+                    <TextBlock Classes="fieldLabel" Text="Category"/>
+                    <ComboBox Width="260" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"/>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Bottom" Spacing="10" Margin="0,12,0,0">
+                    <TextBlock Text="{Binding Hint}" FontSize="12" Foreground="#475569" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Classes="secondary" Content="Cancel Selected Request" Command="{Binding CancelCommand}"/>
+                        <Button Classes="primary" Content="Issue to First in Line" Command="{Binding IssueFirstCommand}"
+                                IsEnabled="{Binding CanIssue}"/>
+                    </StackPanel>
+                </StackPanel>
+                <Border DockPanel.Dock="Top" Classes="thead">
+                    <Grid ColumnDefinitions="100,*">
+                        <TextBlock Classes="th" Grid.Column="0" Text="Position"/>
+                        <TextBlock Classes="th" Grid.Column="1" Text="Borrower"/>
+                    </Grid>
+                </Border>
+                <ListBox Classes="table" ItemsSource="{Binding Entries}" SelectedItem="{Binding SelectedEntry}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:WaitingRow">
+                            <Border Classes="trow">
+                                <Grid ColumnDefinitions="100,*">
+                                    <TextBlock Grid.Column="0" Text="{Binding Position}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Borrower}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="2" Classes="note" Classes.error="{Binding IsError}" IsVisible="{Binding HasMessage}">
+            <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
+</UserControl>
