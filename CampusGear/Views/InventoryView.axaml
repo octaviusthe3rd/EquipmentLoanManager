@@ -1,0 +1,105 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:CampusGear.ViewModels"
+             x:Class="CampusGear.Views.InventoryView"
+             x:DataType="vm:InventoryViewModel">
+
+    <Grid Margin="26,22" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="14">
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Classes="pageTitle" Text="Inventory"/>
+            <TextBlock Classes="pageSub" Text="See what exists, what is free and who holds it."/>
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*" ColumnSpacing="12">
+            <Border Grid.Column="0" Classes="card" Padding="16,12">
+                <StackPanel>
+                    <TextBlock Classes="kpiLabel" Text="Total items"/>
+                    <TextBlock Classes="kpiValue" Text="{Binding TotalItems}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Classes="card" Padding="16,12">
+                <StackPanel>
+                    <TextBlock Classes="kpiLabel" Text="Available"/>
+                    <TextBlock Classes="kpiValue" Text="{Binding AvailableItems}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Classes="card" Padding="16,12">
+                <StackPanel>
+                    <TextBlock Classes="kpiLabel" Text="Borrowed"/>
+                    <TextBlock Classes="kpiValue" Text="{Binding BorrowedItems}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="3" Classes="card" Padding="16,12">
+                <StackPanel>
+                    <TextBlock Classes="kpiLabel" Text="Categories in use"/>
+                    <TextBlock Classes="kpiValue" Text="{Binding CategoryCount}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" Classes="card">
+            <StackPanel Spacing="8">
+                <TextBlock Classes="cardTitle" Text="Inventory summary"/>
+                <Border Classes="thead">
+                    <Grid ColumnDefinitions="*,120,120,120">
+                        <TextBlock Classes="th" Grid.Column="0" Text="Category"/>
+                        <TextBlock Classes="th" Grid.Column="1" Text="Configured"/>
+                        <TextBlock Classes="th" Grid.Column="2" Text="Available"/>
+                        <TextBlock Classes="th" Grid.Column="3" Text="Borrowed"/>
+                    </Grid>
+                </Border>
+                <ItemsControl ItemsSource="{Binding Summaries}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:CategorySummary">
+                            <Border Classes="trow">
+                                <Grid ColumnDefinitions="*,120,120,120">
+                                    <TextBlock Grid.Column="0" Text="{Binding Category}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Configured}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Available}"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding Borrowed}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="3" Classes="card">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Classes="cardTitle" Text="Equipment items" Margin="0,0,0,10"/>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="10" Margin="0,0,0,10">
+                    <TextBlock Text="Filter by category" VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold"/>
+                    <ComboBox Width="200" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"/>
+                </StackPanel>
+                <Border DockPanel.Dock="Top" Classes="thead">
+                    <Grid ColumnDefinitions="120,170,140,*">
+                        <TextBlock Classes="th" Grid.Column="0" Text="Item ID"/>
+                        <TextBlock Classes="th" Grid.Column="1" Text="Category"/>
+                        <TextBlock Classes="th" Grid.Column="2" Text="Status"/>
+                        <TextBlock Classes="th" Grid.Column="3" Text="Held by"/>
+                    </Grid>
+                </Border>
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding VisibleItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:EquipmentRow">
+                                <Border Classes="trow">
+                                    <Grid ColumnDefinitions="120,170,140,*">
+                                        <TextBlock Grid.Column="0" Text="{Binding ItemId}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Category}"/>
+                                        <Border Grid.Column="2" Classes="pill" Classes.borrowed="{Binding IsBorrowed}" HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding Status}"/>
+                                        </Border>
+                                        <TextBlock Grid.Column="3" Text="{Binding HeldBy}"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>
