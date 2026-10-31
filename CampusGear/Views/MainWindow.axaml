@@ -1,0 +1,45 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CampusGear.ViewModels"
+        xmlns:views="using:CampusGear.Views"
+        x:Class="CampusGear.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Campus Equipment Simulator"
+        Width="1100" Height="780" MinWidth="900" MinHeight="600"
+        Background="#F4F6FB"
+        WindowStartupLocation="CenterScreen">
+
+    <!-- "When the content is this view-model, show this view" -->
+    <Window.DataTemplates>
+        <DataTemplate DataType="vm:SetupViewModel"><views:SetupView/></DataTemplate>
+        <DataTemplate DataType="vm:InventoryViewModel"><views:InventoryView/></DataTemplate>
+        <DataTemplate DataType="vm:BorrowersViewModel"><views:BorrowersView/></DataTemplate>
+        <DataTemplate DataType="vm:BorrowViewModel"><views:BorrowView/></DataTemplate>
+        <DataTemplate DataType="vm:ReturnsViewModel"><views:ReturnsView/></DataTemplate>
+        <DataTemplate DataType="vm:WaitingListsViewModel"><views:WaitingListsView/></DataTemplate>
+        <DataTemplate DataType="vm:RecordsViewModel"><views:RecordsView/></DataTemplate>
+    </Window.DataTemplates>
+
+    <DockPanel>
+        <Border DockPanel.Dock="Bottom" Height="34" Background="#E0F2FE"
+                BorderBrush="#BAE6FD" BorderThickness="0,1,0,0">
+            <TextBlock Text="{Binding StatusMessage}" Foreground="#0C4A6E"
+                       FontSize="13" VerticalAlignment="Center" Margin="16,0"/>
+        </Border>
+
+        <Border DockPanel.Dock="Left" Width="200" Background="#0F172A">
+            <StackPanel Margin="0,16">
+                <TextBlock Text="Campus Gear" Foreground="White" FontSize="16"
+                           FontWeight="Bold" Margin="20,0,20,14"/>
+                <Button Classes="nav" Content="Inventory"     Command="{Binding ShowInventoryCommand}" IsEnabled="{Binding IsConfigured}"/>
+                <Button Classes="nav" Content="Borrowers"     Command="{Binding ShowBorrowersCommand}" IsEnabled="{Binding IsConfigured}"/>
+                <Button Classes="nav" Content="Borrow"        Command="{Binding ShowBorrowCommand}"    IsEnabled="{Binding IsConfigured}"/>
+                <Button Classes="nav" Content="Returns"       Command="{Binding ShowReturnsCommand}"   IsEnabled="{Binding IsConfigured}"/>
+                <Button Classes="nav" Content="Waiting Lists" Command="{Binding ShowWaitingCommand}"   IsEnabled="{Binding IsConfigured}"/>
+                <Button Classes="nav" Content="Records"       Command="{Binding ShowRecordsCommand}"   IsEnabled="{Binding IsConfigured}"/>
+            </StackPanel>
+        </Border>
+
+        <ContentControl Content="{Binding CurrentPage}"/>
+    </DockPanel>
+</Window>
